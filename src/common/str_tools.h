@@ -66,12 +66,41 @@ static inline string double2a(double num)
     return str_create("%f", num);
 }
 
+/* Case-sensitive: does s end with the suffix suff? */
 static inline int str_end_with(const char *s, const char *suff)
 {
     size_t slen     = strlen(s);
     size_t sufflen  = strlen(suff);
     return slen >= sufflen &&
         !memcmp(s + slen - sufflen, suff, sufflen);
+}
+
+/* Case-insensitive: does s end with the suffix suff? */
+static inline int str_end_with_lower(const char *s, const char *suff)
+{
+    size_t slen     = strlen(s);
+    size_t sufflen  = strlen(suff);
+    if (slen < sufflen)
+        return 0;
+    const char *p = s + slen - sufflen;
+    for (size_t i = 0; i < sufflen; ++i) {
+        if (tolower((unsigned char)p[i]) != tolower((unsigned char)suff[i]))
+            return 0;
+    }
+    return 1;
+}
+
+/* File extensions for Android APK and split-APK containers (.apk/.xapk/.apks) */
+#define APK_EXTENSION       ".apk"
+#define SPLIT_APK_XAPK      ".xapk"
+#define SPLIT_APK_APKS      ".apks"
+
+/* Case-insensitive check: does path end in an APK / split-APK container extension? */
+static inline int str_is_apk_path(const char *path)
+{
+    return str_end_with_lower(path, APK_EXTENSION)  ||
+           str_end_with_lower(path, SPLIT_APK_XAPK) ||
+           str_end_with_lower(path, SPLIT_APK_APKS);
 }
 
 static inline int str_start_with(const string s, const string suff)
@@ -91,13 +120,6 @@ static inline string str_dup(const char *str)
     new_str[len] = '\0';
     return new_str;
 //    return str_create("%s", str);
-}
-
-static inline string str_lower(char *src)
-{
-    char *s = str_dup(src);
-    for(char *p=s; *p; p++) *p=tolower(*p);
-    return s;
 }
 
 static inline int str_replace_char(char *str, char orig, char rep)

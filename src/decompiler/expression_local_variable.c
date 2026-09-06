@@ -152,8 +152,7 @@ static string gen_variable_name(jd_method *m, jd_exp *exp, string cname)
         var_name = str_create("char%d", count);
 
     string last_word = get_last_word_lower(cname);
-    string lower = str_lower(last_word);
-    lower = get_array_variable_name(lower);
+    string lower = get_array_variable_name(last_word);
     if (var_name == NULL) {
         if (count == 0)
             var_name = str_create("%s", lower);

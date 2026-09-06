@@ -739,7 +739,7 @@ static void apk_analyzer_process_zip(struct zip_t *zip)
         }
 
         /* Nested APK (split APK / App Bundle) — recurse into it */
-        if (str_end_with(entry_name, ".apk")) {
+        if (str_is_apk_path(entry_name)) {
             size_t buf_size = zip_entry_size(zip);
             char *buf = malloc(buf_size);
             if (buf) {

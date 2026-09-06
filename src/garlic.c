@@ -63,7 +63,7 @@ static jd_file_type_t magic_of_file(char *filepath) {
         case JAVA_CLASS_MAGIC:
             return JD_FILE_TYPE_JAVA_CLASS;
         case JAR_FILE_MAGIC: {
-            if (str_end_with(filepath, ".apk")) {
+            if (str_is_apk_path(filepath)) {
                 return JD_FILE_TYPE_APK;
             } else {
                 return JD_FILE_TYPE_JAR;

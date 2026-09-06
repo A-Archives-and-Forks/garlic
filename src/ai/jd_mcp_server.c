@@ -195,7 +195,7 @@ int jd_mcp_detect_file_type(const char *path)
         case DEX_FILE_MAGIC:
             return JD_MCP_FILE_DEX;
         case ZIP_FILE_MAGIC: {
-            if (strstr(path, ".apk") || strstr(path, ".APK"))
+            if (str_is_apk_path(path))
                 return JD_MCP_FILE_APK;
             return JD_MCP_FILE_JAR;
         }
